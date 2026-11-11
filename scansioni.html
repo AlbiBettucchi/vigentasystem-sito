@@ -1,0 +1,229 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Scansioni · VigentaSystem</title>
+<meta name="description" content="Chi esegue le scansioni di VigentaSystem, cosa leggono, cosa non fanno mai e come escludere la propria rete.">
+<link rel="canonical" href="https://vigentasystem.com/scansioni.html">
+<style>
+/* Layout: una colonna di lettura, una tabella del perimetro, un modulo che prepara la richiesta di esclusione */
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5a6475;
+  --line: #dde1e8;
+  --accent: #23518c;
+  --ok: #1f6b45;
+  --no: #9a2f2f;
+  /* solo caratteri di sistema: nessuna risorsa esterna, nessun dato dei visitatori a terzi */
+  --font-display: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a1f28; --fg: #e4e8ef; --muted: #9aa4b4; --line: #2c3340;
+    --accent: #8db4ea; --ok: #7cc7a0; --no: #ec9a9a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a1f28; --fg: #e4e8ef; --muted: #9aa4b4; --line: #2c3340;
+  --accent: #8db4ea; --ok: #7cc7a0; --no: #ec9a9a; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 3rem 4rem; display: grid; gap: 2.75rem; }
+header { display: grid; gap: .75rem; border-bottom: 1px solid var(--line); padding-bottom: 2rem; }
+.eyebrow { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+h1, h2 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1rem; margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+section { display: grid; gap: 1rem; min-width: 0; }
+.lead { font-size: 1.08rem; color: var(--fg); }
+.muted { color: var(--muted); font-size: .92rem; }
+a { color: var(--accent); }
+code, .mono { font-family: var(--font-mono); font-size: .9em; }
+ul { margin: 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.split > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem; display: grid; gap: .6rem; align-content: start; }
+.tag { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; }
+.tag.ok { color: var(--ok); } .tag.no { color: var(--no); }
+.contact { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: .9rem 1.1rem; }
+.contact .addr { font-family: var(--font-mono); font-size: 1rem; user-select: all; word-break: break-all; }
+button { font: inherit; font-size: .9rem; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 4px; padding: .35rem .8rem; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--bg); }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+form { display: grid; gap: .9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem; }
+label { display: grid; gap: .3rem; font-size: .92rem; font-weight: 500; }
+input, textarea { font: inherit; font-size: .95rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: .5rem .6rem; width: 100%; box-sizing: border-box; }
+textarea { min-height: 9rem; font-family: var(--font-mono); font-size: .85rem; resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.status { font-size: .88rem; color: var(--ok); min-height: 1.3em; }
+dl { margin: 0; display: grid; grid-template-columns: 11rem 1fr; gap: .55rem 1.2rem; }
+dt { font-weight: 600; font-size: .92rem; }
+dd { margin: 0; min-width: 0; }
+.en { border-top: 1px solid var(--line); padding-top: 2rem; }
+footer { color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+@media (max-width: 640px) {
+  .split { grid-template-columns: 1fr; }
+  dl { grid-template-columns: 1fr; gap: .2rem; }
+  dd { margin-bottom: .6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Ricerca sul rischio informatico delle PMI italiane</div>
+    <h1>Scansioni dei servizi esposti su Internet</h1>
+    <p class="lead">Se trovi questa pagina partendo da un traffico verso la tua rete, ecco chi siamo, cosa leggiamo, cosa non facciamo mai e come escludere i tuoi indirizzi.</p>
+  </header>
+
+  <section>
+    <h2>Chi siamo e perché scansioniamo</h2>
+    <p><strong>VigentaSystem</strong> è un progetto di Alberto Bettucchi (società in costituzione) che misura il rischio informatico delle piccole e medie imprese italiane, per aiutarle ad assicurarsi al prezzo corretto e a correggere le esposizioni più gravi.</p>
+    <p>Per farlo verifichiamo quali servizi un'impresa espone su Internet, leggendo soltanto ciò che quei servizi mostrano a chiunque si colleghi. È la stessa attività che svolgono da anni motori di ricerca come Shodan e Censys.</p>
+    <p class="muted">In questa fase le scansioni sono eseguite su nostra richiesta da Shodan, dai suoi server. L'elenco delle esclusioni qui sotto vale comunque per noi: non chiediamo scansioni degli indirizzi esclusi.</p>
+  </section>
+
+  <section>
+    <h2>Cosa facciamo e cosa non facciamo</h2>
+    <div class="split">
+      <div>
+        <span class="tag ok">Facciamo</span>
+        <ul>
+          <li>Verifichiamo quali porte rispondono</li>
+          <li>Leggiamo il messaggio che il servizio invia da solo, il certificato TLS e le intestazioni della pagina principale</li>
+          <li>Riconosciamo tipo e versione del software, fermandoci prima di qualsiasi richiesta di credenziali</li>
+          <li>Confrontiamo le versioni con le vulnerabilità note, solo su database pubblici</li>
+          <li>Scansioniamo solo indirizzi attribuiti a un'impresa, al massimo una volta ogni 30 giorni</li>
+        </ul>
+      </div>
+      <div>
+        <span class="tag no">Non facciamo mai</span>
+        <ul>
+          <li>Tentativi di accesso, nemmeno con credenziali predefinite o anonime</li>
+          <li>Lettura di dati da servizi non protetti</li>
+          <li>Test di vulnerabilità che inviano attacchi, fuzzing o sfruttamento</li>
+          <li>Ricerca di pagine o cartelle non pubblicate</li>
+          <li>Test di carico o qualsiasi azione che possa rallentare un servizio</li>
+          <li>Scansioni dell'infrastruttura condivisa dei fornitori di hosting</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="esclusione">
+    <h2>Escludi la tua rete</h2>
+    <p>Puoi chiedere di escludere indirizzi IP, reti o domini. Non serve una motivazione. Applichiamo l'esclusione <strong>entro 48 ore</strong> e la manteniamo in modo permanente.</p>
+    <p>Scrivi a questo indirizzo con oggetto <span class="mono">Esclusione scansioni</span>:</p>
+    <div class="contact">
+      <span class="addr" id="indirizzo">scansioni@vigentasystem.com</span>
+      <button type="button" id="copia-indirizzo">Copia indirizzo</button>
+    </div>
+    <p class="muted">Se preferisci, compila i campi qui sotto: la pagina prepara il testo da incollare nella tua email. Nulla viene inviato da questa pagina.</p>
+    <form id="modulo" novalidate>
+      <label for="reti">Indirizzi IP, reti o domini da escludere
+        <input id="reti" name="reti" placeholder="es. 203.0.113.0/24, esempio.it" autocomplete="off">
+      </label>
+      <label for="org">Organizzazione
+        <input id="org" name="org" placeholder="es. Rossi Srl" autocomplete="organization">
+      </label>
+      <label for="note">Note (facoltative)
+        <input id="note" name="note" placeholder="es. referente tecnico, ticket interno" autocomplete="off">
+      </label>
+      <label for="testo">Testo da incollare nell'email
+        <textarea id="testo" readonly></textarea>
+      </label>
+      <div class="row">
+        <button type="submit" class="primary" id="copia-testo">Copia il testo</button>
+        <span class="status" id="stato" role="status"></span>
+      </div>
+    </form>
+  </section>
+
+  <section>
+    <h2>Segnalazioni</h2>
+    <p>Se pensi che una nostra scansione abbia disturbato un tuo servizio, scrivi allo stesso indirizzo indicando data, ora e indirizzi coinvolti. Rispondiamo <strong>entro 24 ore</strong> e sospendiamo subito le scansioni verso la tua rete mentre verifichiamo. Ogni richiesta che facciamo è registrata, quindi possiamo ricostruire cosa è successo.</p>
+  </section>
+
+  <section>
+    <h2>Informativa sul trattamento dei dati</h2>
+    <p class="muted">Ai sensi dell'art. 14 del Regolamento (UE) 2016/679, per i dati non raccolti presso l'interessato.</p>
+    <dl>
+      <dt>Titolare</dt><dd>Alberto Bettucchi, contatto: scansioni@vigentasystem.com</dd>
+      <dt>Finalità</dt><dd>Valutare il rischio informatico delle imprese a fini assicurativi e di prevenzione</dd>
+      <dt>Base giuridica</dt><dd>Interesse legittimo (art. 6, par. 1, lett. f)</dd>
+      <dt>Dati trattati</dt><dd>Indirizzi IP e nomi a dominio, porte e servizi esposti, versioni del software, vulnerabilità note. Mai contenuti dei servizi né dati di accesso</dd>
+      <dt>Fonti</dt><dd>Scansioni eseguite da Shodan su nostra richiesta; database pubblici (DNS, certificati, cataloghi di vulnerabilità)</dd>
+      <dt>Trasferimento</dt><dd>Gli indirizzi da scansionare sono comunicati a Shodan LLC, negli Stati Uniti</dd>
+      <dt>Destinatari</dt><dd>Compagnie, riassicuratori e intermediari coinvolti nella copertura assicurativa. I risultati non vengono pubblicati</dd>
+      <dt>Conservazione</dt><dd>Risultati: 24 mesi. Registro delle scansioni: 12 mesi</dd>
+      <dt>Diritti</dt><dd>Accesso, rettifica, cancellazione, limitazione e opposizione (art. 15-21), scrivendo al contatto sopra; reclamo al <a href="https://www.garanteprivacy.it" rel="noopener">Garante per la protezione dei dati personali</a></dd>
+    </dl>
+  </section>
+
+  <section class="en" lang="en">
+    <h2>In English</h2>
+    <p>VigentaSystem measures the cyber risk of Italian small businesses for insurance and prevention. Scans are currently run on our request by Shodan. We only read what exposed services show to anyone: open ports, banners, TLS certificates, HTTP headers and software versions. We never attempt to log in, read data, exploit vulnerabilities or load-test services, and each address is scanned at most once every 30 days.</p>
+    <p>To opt out, email <span class="mono">scansioni@vigentasystem.com</span> with the subject <span class="mono">Scan opt-out</span> and the IPs, ranges or domains to exclude. Opt-outs are applied within 48 hours and kept permanently. Abuse reports get a reply within 24 hours.</p>
+  </section>
+
+  <footer><a href="/">VigentaSystem</a> · <a href="/.well-known/security.txt">security.txt</a> · Ultimo aggiornamento: 11 novembre 2026</footer>
+</div>
+
+<script>
+(function () {
+  var reti = document.getElementById('reti');
+  var org = document.getElementById('org');
+  var note = document.getElementById('note');
+  var testo = document.getElementById('testo');
+  var stato = document.getElementById('stato');
+
+  function componi() {
+    var r = reti.value.trim() || '[indirizzi IP, reti o domini]';
+    var o = org.value.trim() || '[organizzazione]';
+    var n = note.value.trim();
+    testo.value =
+      'Oggetto: Esclusione scansioni\n\n' +
+      'Buongiorno,\nchiedo di escludere dalle vostre scansioni:\n' + r + '\n\n' +
+      'Organizzazione: ' + o + '\n' + (n ? 'Note: ' + n + '\n' : '') +
+      '\nGrazie.';
+  }
+
+  function copia(valore, campo, messaggio) {
+    function seleziona() {
+      if (campo) { campo.focus(); campo.select(); }
+      stato.textContent = 'Testo selezionato: copialo con Cmd+C o Ctrl+C.';
+    }
+    try {
+      navigator.clipboard.writeText(valore).then(function () { stato.textContent = messaggio; }, seleziona);
+    } catch (e) { seleziona(); }
+  }
+
+  [reti, org, note].forEach(function (el) { el.addEventListener('input', componi); });
+  document.getElementById('modulo').addEventListener('submit', function (e) {
+    e.preventDefault();
+    componi();
+    copia(testo.value, testo, 'Testo copiato. Incollalo in una email all’indirizzo qui sopra.');
+  });
+  document.getElementById('copia-indirizzo').addEventListener('click', function () {
+    var addr = document.getElementById('indirizzo').textContent;
+    try {
+      navigator.clipboard.writeText(addr).then(function () { stato.textContent = 'Indirizzo copiato.'; }, function () {});
+    } catch (e) {}
+  });
+  componi();
+})();
+</script>
+</body>
+</html>

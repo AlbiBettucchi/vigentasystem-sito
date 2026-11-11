@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="it">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VigentaSystem</title>
+<meta name="description" content="VigentaSystem misura il rischio informatico delle piccole e medie imprese italiane, per assicurarle al prezzo corretto e aiutarle a prevenire gli attacchi.">
+<link rel="canonical" href="https://vigentasystem.com/">
+<style>
+/* Layout: una colonna di lettura, una tabella del perimetro, un modulo che prepara la richiesta di esclusione */
+:root {
+  --bg: #f7f8fa;
+  --surface: #ffffff;
+  --fg: #1b2230;
+  --muted: #5a6475;
+  --line: #dde1e8;
+  --accent: #23518c;
+  --ok: #1f6b45;
+  --no: #9a2f2f;
+  /* solo caratteri di sistema: nessuna risorsa esterna, nessun dato dei visitatori a terzi */
+  --font-display: Charter, "Bitstream Charter", "Sitka Text", Cambria, Georgia, serif;
+  --font-body: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+  --font-mono: ui-monospace, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --bg: #12161d; --surface: #1a1f28; --fg: #e4e8ef; --muted: #9aa4b4; --line: #2c3340;
+    --accent: #8db4ea; --ok: #7cc7a0; --no: #ec9a9a; color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --bg: #12161d; --surface: #1a1f28; --fg: #e4e8ef; --muted: #9aa4b4; --line: #2c3340;
+  --accent: #8db4ea; --ok: #7cc7a0; --no: #ec9a9a; color-scheme: dark;
+}
+body {
+  background: var(--bg); color: var(--fg);
+  font-family: var(--font-body); font-size: 16px; line-height: 1.6;
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.wrap { max-width: 46rem; margin: 0 auto; padding-block: 3rem 4rem; display: grid; gap: 2.75rem; }
+header { display: grid; gap: .75rem; border-bottom: 1px solid var(--line); padding-bottom: 2rem; }
+.eyebrow { font-family: var(--font-mono); font-size: .78rem; letter-spacing: .06em; text-transform: uppercase; color: var(--accent); }
+h1, h2 { font-family: var(--font-display); font-weight: 600; text-wrap: balance; line-height: 1.25; margin: 0; }
+h1 { font-size: clamp(1.8rem, 4.5vw, 2.4rem); }
+h2 { font-size: 1.35rem; }
+h3 { font-size: 1rem; margin: 0; font-weight: 600; }
+p { margin: 0; max-width: 65ch; }
+section { display: grid; gap: 1rem; min-width: 0; }
+.lead { font-size: 1.08rem; color: var(--fg); }
+.muted { color: var(--muted); font-size: .92rem; }
+a { color: var(--accent); }
+code, .mono { font-family: var(--font-mono); font-size: .9em; }
+ul { margin: 0; padding-left: 1.2rem; display: grid; gap: .35rem; }
+.split { display: grid; grid-template-columns: 1fr 1fr; gap: 1rem; }
+.split > div { min-width: 0; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.1rem 1.2rem; display: grid; gap: .6rem; align-content: start; }
+.tag { font-family: var(--font-mono); font-size: .75rem; letter-spacing: .05em; text-transform: uppercase; }
+.tag.ok { color: var(--ok); } .tag.no { color: var(--no); }
+.contact { display: flex; flex-wrap: wrap; align-items: center; gap: .6rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: .9rem 1.1rem; }
+.contact .addr { font-family: var(--font-mono); font-size: 1rem; user-select: all; word-break: break-all; }
+button { font: inherit; font-size: .9rem; border: 1px solid var(--accent); background: transparent; color: var(--accent); border-radius: 4px; padding: .35rem .8rem; cursor: pointer; }
+button.primary { background: var(--accent); color: var(--bg); }
+button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+form { display: grid; gap: .9rem; background: var(--surface); border: 1px solid var(--line); border-radius: 6px; padding: 1.2rem; }
+label { display: grid; gap: .3rem; font-size: .92rem; font-weight: 500; }
+input, textarea { font: inherit; font-size: .95rem; color: var(--fg); background: var(--bg); border: 1px solid var(--line); border-radius: 4px; padding: .5rem .6rem; width: 100%; box-sizing: border-box; }
+textarea { min-height: 9rem; font-family: var(--font-mono); font-size: .85rem; resize: vertical; }
+.row { display: flex; flex-wrap: wrap; gap: .6rem; align-items: center; }
+.status { font-size: .88rem; color: var(--ok); min-height: 1.3em; }
+dl { margin: 0; display: grid; grid-template-columns: 11rem 1fr; gap: .55rem 1.2rem; }
+dt { font-weight: 600; font-size: .92rem; }
+dd { margin: 0; min-width: 0; }
+.en { border-top: 1px solid var(--line); padding-top: 2rem; }
+footer { color: var(--muted); font-size: .85rem; border-top: 1px solid var(--line); padding-top: 1.2rem; }
+@media (max-width: 640px) {
+  .split { grid-template-columns: 1fr; }
+  dl { grid-template-columns: 1fr; gap: .2rem; }
+  dd { margin-bottom: .6rem; }
+}
+</style>
+</head>
+<body>
+
+<div class="wrap">
+  <header>
+    <div class="eyebrow">Rischio informatico delle PMI italiane</div>
+    <h1>VigentaSystem</h1>
+    <p class="lead">Misuriamo il rischio informatico delle piccole e medie imprese italiane, per aiutarle ad assicurarsi al prezzo corretto e a correggere le esposizioni più gravi prima che diventino un sinistro.</p>
+  </header>
+
+  <section>
+    <h2>A che punto siamo</h2>
+    <p>VigentaSystem è un progetto di Alberto Bettucchi, società in costituzione. Stiamo costruendo il metodo di valutazione insieme a compagnie e riassicuratori: in questa fase non vendiamo polizze e non offriamo servizi alle imprese.</p>
+  </section>
+
+  <section>
+    <h2>Scansioni</h2>
+    <p>Se hai visto traffico verso la tua rete legato a noi, trovi chi lo esegue, cosa leggiamo, cosa non facciamo mai e come escludere i tuoi indirizzi nella pagina <a href="/scansioni.html">Scansioni dei servizi esposti</a>.</p>
+  </section>
+
+  <section>
+    <h2>Contatti</h2>
+    <dl>
+      <dt>Scansioni ed esclusioni</dt><dd><span class="mono">scansioni@vigentasystem.com</span></dd>
+      <dt>Segnalazioni di sicurezza</dt><dd><span class="mono">security@vigentasystem.com</span> · <a href="/.well-known/security.txt">security.txt</a></dd>
+    </dl>
+  </section>
+
+  <section class="en" lang="en">
+    <h2>In English</h2>
+    <p>VigentaSystem measures the cyber risk of Italian small and medium businesses for insurance and prevention. We are a company in formation and do not yet sell insurance. Questions about our scans: <span class="mono">scansioni@vigentasystem.com</span>; security reports: <span class="mono">security@vigentasystem.com</span>.</p>
+  </section>
+
+  <footer>Ultimo aggiornamento: 11 novembre 2026</footer>
+</div>
+</body>
+</html>
